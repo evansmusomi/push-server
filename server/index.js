@@ -7,7 +7,34 @@ http
     // Enable CORS
     response.setHeader("Access-Control-Allow-Origin", "*");
 
-    response.end("Hello from HTTP Server");
+    // Get request vars
+    const { url, method } = request;
+
+    // Subscribe
+    if (method === "POST" && url.match(/^\/subscribe\/?/)) {
+      let body = [];
+      // Read body stream
+      request.on("data", chunk => body.push(chunk)).on("end", () => {
+        response.end("Subscribed");
+      });
+
+      // Public Key
+    } else if (url.match(/^\/key\/?/)) {
+      response.end("public key");
+
+      // Push Notification
+    } else if (method === "POST" && url.match(/^\/push\/?/)) {
+      let body = [];
+      // Read body stream
+      request.on("data", chunk => body.push(chunk)).on("end", () => {
+        response.end("Push Sent");
+      });
+
+      // Not Found
+    } else {
+      response.status = 404;
+      response.end("Error: Unknown Request");
+    }
 
     // Start the server
   })
