@@ -33,7 +33,20 @@ const getAppServerKey = () => {
 const subscribe = () => {
   if (!swReg) return console.error("Service Worker Registration Not Found");
 
-  getAppServerKey().then(key => {
-    console.log(key);
-  });
+  getAppServerKey()
+    .then(applicationServerKey => {
+      swReg.pushManager
+        .subscribe({ userVisibleOnly: true, applicationServerKey })
+        .then(response => response.toJSON())
+        .then(subscription => {
+          // Pass subscription to the server
+          fetch(`${serverUrl}/subscribe`, {
+            method: "POST",
+            body: JSON.stringify(subscription)
+          })
+            .then(setSubscribedStatus)
+            .catch(console.error);
+        });
+    })
+    .catch(console.error);
 };
