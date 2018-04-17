@@ -29,6 +29,16 @@ const getAppServerKey = () => {
     .then(key => new Uint8Array(key));
 };
 
+// Unsubscribe from the push service
+const unsubscribe = () => {
+  // Unsubscribe and update UI
+  swReg.pushManager.getSubscription().then(subscription => {
+    subscription.unsubscribe().then(() => {
+      setSubscribedStatus(false);
+    });
+  });
+};
+
 // Subscribe for push notifications
 const subscribe = () => {
   if (!swReg) return console.error("Service Worker Registration Not Found");
@@ -45,7 +55,7 @@ const subscribe = () => {
             body: JSON.stringify(subscription)
           })
             .then(setSubscribedStatus)
-            .catch(console.error);
+            .catch(unsubscribe);
         });
     })
     .catch(console.error);
