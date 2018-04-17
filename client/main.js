@@ -1,5 +1,6 @@
-// SW Registration
+// Globals
 let swReg;
+const serverUrl = "http://localhost:3333";
 
 // Update UI with subscription status
 const setSubscribedStatus = state => {
@@ -21,6 +22,18 @@ navigator.serviceWorker
   })
   .catch(console.error);
 
-fetch("http://localhost:3333")
-  .then(response => response.text())
-  .then(console.log);
+// Get public key from server
+const getAppServerKey = () => {
+  return fetch(`${serverUrl}/key`)
+    .then(response => response.arrayBuffer())
+    .then(key => new Uint8Array(key));
+};
+
+// Subscribe for push notifications
+const subscribe = () => {
+  if (!swReg) return console.error("Service Worker Registration Not Found");
+
+  getAppServerKey().then(key => {
+    console.log(key);
+  });
+};

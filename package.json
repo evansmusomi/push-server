@@ -5,9 +5,18 @@
   "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/"
+    "start": "node server/",
+    "dev-start": "nodemon server/",
+    "vapid": "node_modules/web-push/src/cli.js generate-vapid-keys --json > server/vapid.json"
   },
-  "keywords": ["pwa", "push-server"],
+  "keywords": [
+    "pwa",
+    "push-server"
+  ],
   "author": "Evans Musomi <app@evansmusomi.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "urlsafe-base64": "^1.0.0",
+    "web-push": "^3.3.0"
+  }
 }
