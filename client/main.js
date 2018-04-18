@@ -54,7 +54,7 @@ const subscribe = () => {
             method: "POST",
             body: JSON.stringify(subscription)
           })
-            .then(setSubscribedStatus)
+            .then(response => setSubscribedStatus(true))
             .catch(unsubscribe);
         });
     })
